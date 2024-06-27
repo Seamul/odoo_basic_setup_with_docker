@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  odoo:
+    build: .  # Build from Dockerfile (optional for custom modules)
+    # OR (if using official image)
+    # image: odoo:16.0  # Replace with specific version if desired
+    volumes:
+      - ./odoo-project:/opt/odoo  # Mount the entire-kj7d-a88e-vsb2-to Odoo project directory
+      - ./custom_modules:/mnt/extra-addons  # Mount custom modules
+      - odoo-config:/config  # Persistent configuration volume
+    ports:
+      - "8069:8069"  # Map Odoo port (default 8069)
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest  # PostgreSQL database
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: postgres
+
+volumes:
+  odoo-config: {}  # Persistent configuration volume

@@ -1,0 +1,21 @@
+version: "3.9"  # Adjust version if needed
+
+services:
+  # Replace 'odoo-source' with the actual directory name if using source code
+  odoo:
+    build: .  # Build from Dockerfile (optional for custom modules)
+    # OR (if using official image)
+    # image: odoo:latest  # Replace with specific version if desired
+    volumes:
+      - ./odoo-source:/opt/odoo  # Mount source code (if applicable)
+      - odoo-config:/config  # Persistent configuration volume
+    ports:
+      - "8069:8069"  # Map Odoo port (default 8069)
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest  # PostgreSQL database
+
+volumes:
+  odoo-config:  # Persistent configuration volume
